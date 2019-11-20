@@ -1,4 +1,4 @@
-# Microsoft-Edge-based-on-Chromium-Scripts
+# Microsoft Edge (new Edge, based on Chromium) Scripts
 Scripts for (new) Microsoft Edge (based on Chromium): Backup Favorites / Bookmarks, Modify Settings, ...
 
 ## Backup-Script for Edge Bookmarks (Favorites) into an HTML File
