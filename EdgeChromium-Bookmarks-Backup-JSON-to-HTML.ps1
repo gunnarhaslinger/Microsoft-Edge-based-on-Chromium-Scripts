@@ -2,7 +2,7 @@
 # Gunnar Haslinger, 30.10.2019 - tested width EdgeChromium Beta 78
 
 # Path to EdgeChromium Bookmarks File and HTML Export
-$JSON_File_Path = "$env:localappdata\Microsoft\Edge Beta\User Data\Default\Bookmarks"
+$JSON_File_Path = "$env:localappdata\Microsoft\Edge\User Data\Default\Bookmarks"
 if (!(Test-Path -Path $JSON_File_Path)) { throw "Source-File Path $JSON_File_Path does not exist!" }
 
 $HTML_File_Path = "$env:userprofile\backup"
