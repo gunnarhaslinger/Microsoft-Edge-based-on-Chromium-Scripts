@@ -14,7 +14,7 @@ if (!(Test-Path -Path $JSON_File_Path -PathType Leaf)) {
     throw "Source-File Path $JSON_File_Path does not exist!" 
 }
 if (!(Test-Path -Path $HTML_File_Root -PathType Container)) { 
-    throw "Destination-Path $HTML_File_Path does not exist!" 
+    throw "Destination-Root Path $HTML_File_Root does not exist!" 
 }
 
 # ---- HTML Header ----
