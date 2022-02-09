@@ -1,5 +1,7 @@
 ### Read Microsoft Edge (based on Chromium) Bookmarks (JSON File) and Export/Backup to HTML-File (Edge/Firefox/Chrome compatible Format)
-### Latest Version and contributors, see: https://github.com/gunnarhaslinger/Microsoft-Edge-based-on-Chromium-Scripts
+### Gunnar Haslinger,  works at least width Edge (based on Chromium) Beta 78 (tested on 30.10.2019) up to Edge Stable v98 (tested on 09.02.2022)
+### Contributions by: SCCMOG - Richie Schuster, https://github.com/SCCMOG - SCCMOG.com
+### Latest Version and a list of all contributors, see: https://github.com/gunnarhaslinger/Microsoft-Edge-based-on-Chromium-Scripts
 
 ### Definitions
 $EdgeStable="Edge"
