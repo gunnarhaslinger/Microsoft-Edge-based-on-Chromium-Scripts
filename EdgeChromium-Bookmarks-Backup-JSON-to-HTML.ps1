@@ -1,20 +1,36 @@
-# Read EdgeChromium Bookmarks (JSON File) and Export/Backup to HTML File
-# Gunnar Haslinger, 30.10.2019 - tested width EdgeChromium Beta 78
-# SCCMOG - Richie Schuster, 2022.02.08 - Tested with EdgeChromium 98.0.1108.43 - https://github.com/SCCMOG - SCCMOG.com
+### Read Microsoft Edge (based on Chromium) Bookmarks (JSON File) and Export/Backup to HTML-File (Edge/Firefox/Chrome compatible Format)
+### Latest Version and contributors, see: https://github.com/gunnarhaslinger/Microsoft-Edge-based-on-Chromium-Scripts
 
-# Path to EdgeChromium Bookmarks File and HTML Export
-$JSON_File_Path = "$($env:localappdata)\Microsoft\Edge\User Data\Default\Bookmarks"
-$ExportedTime = Get-Date -Format 'yyyy-MM-dd_HH.mm'
-$HTML_File_Root = "c:\admin"
-$HTML_File_Path = "$($HTML_File_Root)\EdgeChromium-Bookmarks.backup_$($ExportedTime).html"
-# Reference-Timestamp needed to convert Timestamps of JSON (Milliseconds / Ticks since LDAP / NT epoch 01.01.1601 00:00:00 UTC) to Unix-Timestamp (Epoch)
+### Definitions
+$EdgeStable="Edge"
+$EdgeBeta="Edge Beta"
+$EdgeDev="Edge Dev"
+$ExportedTime = Get-Date -Format 'yyyy-MM-dd_HH-mm-ss'
+
+### Choose the Edge Release ($EdgeStable, $EdgeBeta, $EdgeDev) you like to Backup:
+$EdgeRelease=$EdgeStable
+
+### Path to Edge Bookmarks Source-File
+$JSON_File_Path = "$($env:localappdata)\Microsoft\$($EdgeRelease)\User Data\Default\Bookmarks"
+
+### Directory where to store HTML-Export (Backup-Destination-Directory)
+#$HTML_File_Dir = "C:\Temp"
+#$HTML_File_Dir = "$($env:userprofile)\backup"
+#$HTML_File_Dir = "$($env:userprofile)
+$HTML_File_Dir = "$($env:userprofile)\Documents"
+
+### Filename of HTML-Export (Backup-Filename), choose with YYYY-MM-DD_HH-MM-SS Date-Suffix or fixed Filename
+#$HTML_File_Path = "$($HTML_File_Dir)\EdgeChromium-Bookmarks.backup.html"
+$HTML_File_Path = "$($HTML_File_Dir)\EdgeChromium-Bookmarks.backup_$($ExportedTime).html"
+
+## Reference-Timestamp needed to convert Timestamps of JSON (Milliseconds / Ticks since LDAP / NT epoch 01.01.1601 00:00:00 UTC) to Unix-Timestamp (Epoch)
 $Date_LDAP_NT_EPOCH = Get-Date -Year 1601 -Month 1 -Day 1 -Hour 0 -Minute 0 -Second 0
 
 if (!(Test-Path -Path $JSON_File_Path -PathType Leaf)) {
     throw "Source-File Path $JSON_File_Path does not exist!" 
 }
-if (!(Test-Path -Path $HTML_File_Root -PathType Container)) { 
-    throw "Destination-Root Path $HTML_File_Root does not exist!" 
+if (!(Test-Path -Path $HTML_File_Dir -PathType Container)) { 
+    throw "Destination-Directory Path $HTML_File_Dir does not exist!" 
 }
 
 # ---- HTML Header ----
@@ -45,9 +61,11 @@ Function Get-BookmarkFolder {
         )
         $date = [Decimal] $TimeStamp
         if ($date -gt 0) { 
-            $date = $Date_LDAP_NT_EPOCH.AddTicks($date * 10)
-            $date = $date | Get-Date -UFormat %s 
-            $unixTimeStamp = [int][double]::Parse($date) - 1
+            # Timestamp Conversion: JSON-File uses Timestamp-Format "Ticks-Offset since LDAP/NT-Epoch" (reference Timestamp, Epoch since 1601 see above), HTML-File uses Unix-Timestamp (Epoch, since 1970)																																																   
+            $date = $Date_LDAP_NT_EPOCH.AddTicks($date * 10) # Convert the JSON-Timestamp to a valid PowerShell date
+            # $DateAdded # Show Timestamp in Human-Readable-Format (Debugging-purposes only)																					
+            $date = $date | Get-Date -UFormat %s # Convert to Unix-Timestamp
+            $unixTimeStamp = [int][double]::Parse($date) - 1 # Cut off the Milliseconds
             return $unixTimeStamp
         }
     }   
